@@ -23,7 +23,7 @@ from pg_catalog.pg_index pi
     inner join pg_catalog.pg_attribute col on col.attrelid = pi.indrelid and col.attnum = any((string_to_array(pi.indkey::text, ' ')::int2[])[:pi.indnkeyatts])
     inner join pg_catalog.pg_type typ on typ.oid = col.atttypid
 where
-    nsp.nspname = :schema_name_param::text and
+    nsp.nspname = $1 and
     not ic.relispartition and
     typ.typcategory = 'A' /* A stands for Array type */
 order by table_name, index_name;

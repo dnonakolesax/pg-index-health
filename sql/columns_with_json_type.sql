@@ -11,7 +11,6 @@
 -- and https://medium.com/geekculture/postgres-jsonb-usage-and-performance-analysis-cdbd1242a018
 select
     t.oid::regclass::text as table_name,
-    col.attnotnull as column_not_null,
     quote_ident(col.attname) as column_name
 from
     pg_catalog.pg_class t
@@ -23,5 +22,5 @@ where
     col.attnum > 0 and /* to filter out system columns such as oid, ctid, xmin, xmax, etc. */
     not col.attisdropped and
     col.atttypid = 'json'::regtype and
-    nsp.nspname = :schema_name_param::text
+    nsp.nspname = $1
 order by table_name, column_name;

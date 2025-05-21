@@ -16,7 +16,7 @@ with
             nsp.nspname
         from pg_catalog.pg_namespace nsp
         where
-            nsp.nspname = :schema_name_param::text
+            nsp.nspname = $1::text
     ),
 
     foreign_key_indexes as (

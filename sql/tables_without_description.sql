@@ -7,8 +7,7 @@
 
 -- Finds tables that don't have a description. See also https://www.postgresql.org/docs/current/sql-comment.html
 select
-    pc.oid::regclass::text as table_name,
-    pg_table_size(pc.oid) as table_size
+    pc.oid::regclass::text as table_name
 from
     pg_catalog.pg_class pc
     inner join pg_catalog.pg_namespace nsp on nsp.oid = pc.relnamespace
@@ -16,5 +15,5 @@ where
     pc.relkind in ('r', 'p') and
     not pc.relispartition and
     (obj_description(pc.oid) is null or length(trim(obj_description(pc.oid))) = 0) and
-    nsp.nspname = :schema_name_param::text
+    nsp.nspname = $1
 order by table_name;

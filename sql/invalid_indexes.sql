@@ -15,6 +15,6 @@ from
     pg_catalog.pg_index pi
     inner join pg_catalog.pg_stat_all_indexes psai on psai.indexrelid = pi.indexrelid
 where
-    psai.schemaname = :schema_name_param::text and
+    psai.schemaname = $1::text and
     pi.indisvalid = false
 order by table_name, index_name;

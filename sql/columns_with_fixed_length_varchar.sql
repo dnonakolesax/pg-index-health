@@ -10,7 +10,6 @@
 -- See also https://wiki.postgresql.org/wiki/Don%27t_Do_This#Don.27t_use_varchar.28n.29_by_default
 select
     t.oid::regclass::text as table_name,
-    col.attnotnull as column_not_null,
     quote_ident(col.attname) as column_name
 from
     pg_catalog.pg_class t
@@ -23,5 +22,5 @@ where
     not col.attisdropped and
     col.atttypid = 'varchar'::regtype and
     col.atttypmod > 0 and /* only for fixed length varchar (not varchar without n) */
-    nsp.nspname = :schema_name_param::text
+    nsp.nspname = $1
 order by table_name, column_name;

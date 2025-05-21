@@ -42,7 +42,7 @@ with
             not pa.attisdropped and
             pc.relkind = 'r' and
             pc.relpages > 0 and
-            nsp.nspname = :schema_name_param::text
+            nsp.nspname = $1
         group by table_oid, pc.reltuples, heap_pages, toast_pages, toast_tuples, fill_factor, block_size, page_header_size
     ),
 
@@ -100,5 +100,5 @@ select *
 from bloat_stats
 where
     not stats_not_available and
-    bloat_percentage >= :bloat_percentage_threshold::numeric(5, 2)
+    bloat_percentage >= $2::numeric(5, 2)
 order by table_name;

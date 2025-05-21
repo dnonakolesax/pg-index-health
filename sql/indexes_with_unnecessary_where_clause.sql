@@ -30,6 +30,6 @@ where
             att.attnotnull = true and
             pg_get_indexdef(pi.indexrelid) ilike '%where%' || quote_ident(att.attname) || ' is not null%'
     ) and
-    nsp.nspname = :schema_name_param::text
+    nsp.nspname = $1::text
 group by pc.oid, pi.indexrelid
 order by table_name, index_name;

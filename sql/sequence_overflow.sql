@@ -29,13 +29,13 @@ with
             not pg_is_other_temp_schema(nsp.oid) and /* not temporary */
             c.relkind = 'S'::char and /* sequence object */
             not s.seqcycle and /* skip cycle sequences */
-            nsp.nspname = :schema_name_param::text
+            nsp.nspname = $1::text
     ),
 
     sequence_state as (
         select
             t.sequence_name,
-            t.data_type,
+            t.data_type::text,
             case
                 /* ascending or descending sequence */
                 when t.increment_by > 0 then 100.0 * (t.max_value - coalesce(t.last_value, t.start_value)) / (t.max_value - t.min_value)
@@ -47,5 +47,5 @@ with
 select s.*
 from sequence_state s
 where
-    s.remaining_percentage <= :remaining_percentage_threshold::numeric(5, 2)
+    s.remaining_percentage <= $2::numeric(5, 2)
 order by s.sequence_name;

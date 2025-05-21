@@ -18,7 +18,7 @@ from
     inner join pg_catalog.pg_namespace nsp on nsp.oid = pc.relnamespace
     inner join pg_catalog.pg_attribute col on col.attrelid = pi.indrelid and col.attnum = any(pi.indkey)
 where
-    nsp.nspname = :schema_name_param::text and
+    nsp.nspname = $1::text and
     not pi.indisunique and
     pi.indisready and
     pi.indisvalid and

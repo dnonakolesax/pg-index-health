@@ -40,7 +40,7 @@ with
         where
             c.contype = 'f' and
             c.conparentid = 0 and c.coninhcount = 0 and /* not a constraint in a partition */
-            nsp.nspname = :schema_name_param::text
+            nsp.nspname = $1::text
     ),
 
     fk_with_attributes_grouped as (

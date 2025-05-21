@@ -16,7 +16,7 @@ with
             coalesce(psat.seq_scan, 0) as seq_scan,
             coalesce(psat.idx_scan, 0) as idx_scan
         from pg_catalog.pg_stat_all_tables psat
-        where psat.schemaname = :schema_name_param::text
+        where psat.schemaname = $1::text
     )
 
 select

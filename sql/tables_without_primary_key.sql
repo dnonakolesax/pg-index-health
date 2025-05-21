@@ -20,5 +20,5 @@ where
         from pg_catalog.pg_constraint c
         where c.contype = 'p'
     ) and
-    nsp.nspname = :schema_name_param::text
+    nsp.nspname = $1
 order by table_name;

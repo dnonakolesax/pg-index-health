@@ -9,7 +9,6 @@
 -- See also https://www.postgresql.org/docs/current/sql-comment.html
 select
     pc.oid::regclass::text as table_name,
-    col.attnotnull as column_not_null,
     quote_ident(col.attname) as column_name
 from
     pg_catalog.pg_class pc
@@ -21,5 +20,5 @@ where
     col.attnum > 0 and /* to filter out system columns such as oid, ctid, xmin, xmax, etc. */
     not col.attisdropped and
     (col_description(pc.oid, col.attnum) is null or length(trim(col_description(pc.oid, col.attnum))) = 0) and
-    nsp.nspname = :schema_name_param::text
+    nsp.nspname = $1
 order by table_name, column_name;

@@ -22,7 +22,7 @@ with
             inner join pg_catalog.pg_class pc on pc.oid = pi.indexrelid
             inner join pg_catalog.pg_namespace nsp on nsp.oid = pc.relnamespace
         where
-            nsp.nspname = :schema_name_param::text and
+            nsp.nspname = $1::text and
             not pc.relispartition
     )
 

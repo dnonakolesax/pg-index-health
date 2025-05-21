@@ -48,13 +48,13 @@ with
             not col.attisdropped and
             col.atttypid = any('{int,int8,int2}'::regtype[]) and
             (c.res is null or c.res <= 0) and
-            nsp.nspname = :schema_name_param::text
+            nsp.nspname = $1::text
     )
 
 select
     table_name,
     column_name,
-    column_not_null,
+--    column_not_null,
     column_type,
     case when schema_name = 'public'::text then replace(sequence_name, 'public.', '') else sequence_name end as sequence_name
 from t

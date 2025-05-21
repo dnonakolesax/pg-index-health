@@ -13,7 +13,6 @@
 -- See also https://wiki.postgresql.org/wiki/Don%27t_Do_This#Don.27t_use_upper_case_table_or_column_names
 select
     t.oid::regclass::text as table_name,
-    col.attnotnull as column_not_null,
     quote_ident(col.attname) as column_name
 from
     pg_catalog.pg_class t
@@ -25,5 +24,6 @@ where
     col.attnum > 0 and /* to filter out system columns such as oid, ctid, xmin, xmax, etc. */
     not col.attisdropped and
     (col.attname ~ '[A-Z]' or col.attname ~ '[^a-z0-9_]') and /* column name has characters that require quoting */
-    nsp.nspname = :schema_name_param::text
+    nsp.nspname = $1
 order by table_name, column_name;
+

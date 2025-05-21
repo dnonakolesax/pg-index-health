@@ -18,7 +18,7 @@ with
             nsp.nspname
         from pg_catalog.pg_namespace nsp
         where
-            nsp.nspname = :schema_name_param::text
+            nsp.nspname = $1
     ),
 
     fkeys as (
@@ -41,7 +41,7 @@ with
 
 select
     pc.oid::regclass::text as table_name,
-    pg_table_size(pc.oid) as table_size
+    pg_table_size(pc.oid) as table_size 
 from
     pg_catalog.pg_class pc
     inner join nsp on nsp.oid = pc.relnamespace

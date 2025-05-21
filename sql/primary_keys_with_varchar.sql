@@ -14,8 +14,6 @@
 -- {b9b1f6f5-7f90-4b68-a389-f0ad8bb5784b} - with curly braces - 38 characters
 select
     pc.oid::regclass::text as table_name,
-    pi.indexrelid::regclass as index_name,
-    pg_relation_size(pi.indexrelid) as index_size,
     array_agg(quote_ident(a.attname) || ',' || a.attnotnull::text order by u.ordinality) as columns
 from
     pg_catalog.pg_class pc
@@ -41,6 +39,6 @@ where
             a2.atttypid = any('{varchar,bpchar}'::regtype[]) and
             (a2.atttypmod - 4) in (32, 36, 38)
     ) and
-    nsp.nspname = :schema_name_param::text
+    nsp.nspname = $1::text
 group by pc.oid, pi.indexrelid
-order by table_name, index_name;
+order by table_name;
